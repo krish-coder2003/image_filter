@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
-from filters import apply_filter
+from filters import apply_filter  # Import the filter function from filters.py
 
 # Set up Streamlit app configuration
 st.set_page_config(page_title="Image Filter App", layout="centered")
