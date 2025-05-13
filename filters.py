@@ -2,17 +2,21 @@ import cv2
 import numpy as np
 
 def apply_filter(image, filter_type):
+    # Ensure the image is in uint8 format (common for OpenCV)
+    image = image.astype(np.uint8)
+    
     if filter_type == "Original":
         # Return the image unchanged for the "Original" filter
         return image
     
     elif filter_type == "Grayscale":
         # Convert the image to grayscale
-        return cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        # Convert it back to BGR format (for consistent display in Streamlit)
+        return cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
     
     elif filter_type == "Sepia":
         # Apply the sepia filter
-        image = image.astype(np.uint8)
         kernel = np.array([[0.272, 0.534, 0.131],
                            [0.349, 0.686, 0.168],
                            [0.393, 0.769, 0.189]])
