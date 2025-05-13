@@ -1,9 +1,9 @@
 import streamlit as st
-import cv2
 import numpy as np
 from PIL import Image
 from filters import apply_filter
 
+# Set up Streamlit app configuration
 st.set_page_config(page_title="Image Filter App", layout="centered")
 st.title("🎨 Image Filter Web App")
 st.markdown("Upload an image and apply a filter of your choice.")
@@ -15,23 +15,25 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 filter_type = st.selectbox("Choose a filter:", ["Original", "Grayscale", "Sepia", "Blur", "Sketch"])
 
 if uploaded_file is not None:
+    # Open the image file using PIL
     image = Image.open(uploaded_file)
+    
+    # Convert to numpy array (needed for OpenCV operations)
     image_np = np.array(image)
 
-    # Apply filter
+    # Apply the selected filter
     filtered_img = apply_filter(image_np, filter_type)
 
     # Display result
     st.image(filtered_img, channels="BGR", caption=f"Filtered Image - {filter_type}")
 
-    # Convert to download-friendly format
-    result = cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB)
-    result_pil = Image.fromarray(result)
+    # Convert back to PIL image for downloading
+    result = Image.fromarray(filtered_img)
 
-    # Download button
+    # Provide download button
     st.download_button(
         label="📥 Download Image",
-        data=result_pil.tobytes(),
+        data=result.tobytes(),
         file_name=f"filtered_{filter_type.lower()}.png",
         mime="image/png"
     )
